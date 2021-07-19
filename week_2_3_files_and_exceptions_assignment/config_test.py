@@ -5,19 +5,12 @@ import time
 from functions.config_functions import *
 
 #If the user created a new config, that config is displayed. If the user has not created their own config, the basic config is displayed.
-try: 
-    with open("text_files/config_override.json") as json_obj:
-        config_data = json.load(json_obj)
-        print("Safe Mode - " + config_data['Safe Mode'])
-        print("Memory - " + config_data['Memory'])
-        print("Error Log - " + config_data['Error Log'])
 
-except:
-    with open("text_files/basic_config.json") as json_obj:
-        config_data = json.load(json_obj)
-        print("Safe Mode - " + config_data['Safe Mode'])
-        print("Memory - " + config_data['Memory'])
-        print("Error Log - " + config_data['Error Log'])
+config_data = load_file("text_files/config_override.json", "text_files/basic_config.json")
+
+print("Safe Mode - " + config_data['Safe Mode'])
+print("Memory - " + config_data['Memory'])
+print("Error Log - " + config_data['Error Log'])
 
 #Prompts user asking them whether they want to make changes to the configuration or not.
 modify_config = continue_task("modify or add items to the configuration")

@@ -1,3 +1,5 @@
+import json
+
 def continue_task(passed_variable):
     """Asks user if they would like to continue with a certain task.
     Arguments:
@@ -22,3 +24,14 @@ def continue_task(passed_variable):
         return True
     elif add_more.upper() == "N":
         return False
+
+def load_file(first_file, second_file):
+    try: 
+        with open(first_file) as json_obj:
+            loaded_data = json.load(json_obj)
+
+    except:
+        with open(second_file) as json_obj:
+            loaded_data = json.load(json_obj)
+    
+    return loaded_data
