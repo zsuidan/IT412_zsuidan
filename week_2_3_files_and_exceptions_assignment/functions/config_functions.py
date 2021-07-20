@@ -11,7 +11,7 @@ def continue_task(passed_variable):
         True is returned if the user wishes to continue, False is returned if the user does not want to continue.
     """
 
-    add_more = input("Would you like to " + passed_variable + "? (Y/N): ")
+    add_more = input("\nWould you like to " + passed_variable + "? (Y/N): ")
 
     #Checks if Y or N was entered, prompting user to enter again if not
     correct_letter = False
