@@ -1,12 +1,17 @@
 from functions.config_functions import *
 
 #If the user created a new config, that config is displayed. If the user has not created their own config, the basic config is displayed.
-
-config_data = load_file("text_files/config_override.json", "text_files/basic_config.json")
+#If no config file can be found, an error message is displayed.
+try:
+    config_data = load_file("text_files/config_override.json", "text_files/basic_config.json")
+except:
+    print("File could not be loaded.")
+    exit()
 
 print("Safe Mode - \"" + config_data['Safe Mode'] + "\"")
 print("Memory - \"" + config_data['Memory'] + "\"")
 print("Error Log - \"" + config_data['Error Log'] + "\"")
+
 
 #Prompts user asking them whether they want to make changes to the configuration or not.
 modify_config = continue_task("modify or add items to the configuration")
