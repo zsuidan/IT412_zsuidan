@@ -1,5 +1,5 @@
 class Event():
-    """A class for representing an event."""
+    """A class for representing an event. Contains an event name, date, time, and type."""
 
     def __init__(self, name, date, time, type):
         """Constructor for the Event class"""
@@ -53,11 +53,13 @@ class Event():
         """
         allowed_characters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-"]
 
-        characters_ok = True
-
-        for character in date.strip():
-            if character not in allowed_characters:
-                characters_ok = False
+        if date:
+            characters_ok = True
+            for character in date:
+                if character not in allowed_characters:
+                    characters_ok = False
+        else:
+            characters_ok = False
 
         return characters_ok
    
@@ -83,11 +85,14 @@ class Event():
         """
         allowed_characters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":"]
 
-        characters_ok = True
+        if time:
+            characters_ok = True
 
-        for character in time.strip():
-            if character not in allowed_characters:
-                characters_ok = False
+            for character in time:
+                if character not in allowed_characters:
+                    characters_ok = False
+        else:
+            characters_ok = False
 
         return characters_ok
 
