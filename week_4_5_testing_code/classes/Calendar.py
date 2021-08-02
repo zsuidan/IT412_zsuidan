@@ -14,6 +14,13 @@ class Calendar():
         self.owner = owner
         self.events = []
 
+    def addEvent(self, event):
+        """Adds an event to the events list.
+        Argument:
+            event -- the event being added to the list
+        """
+        self.events.append(event)
+
     def addEvents(self):
         """Allows a user to add events to the calendar."""
         keep_adding = "y"
@@ -21,7 +28,7 @@ class Calendar():
         while keep_adding.strip().lower() == "y":
             new_event = Event.createEvent()
 
-            self.events.append(new_event)
+            self.addEvent(new_event)
 
             print("\n" + new_event.name + " added to calendar.")
 
@@ -44,6 +51,13 @@ class Calendar():
         except:
             print("Calendar does not exist.")
 
+    def removeEvent(self, event):
+        """Removes a specified event from the events list.
+        Argument:
+            event -- the event which should be removed
+        """
+        self.events.remove(event)
+
     def removeEvents(self):
         """Allows a user to remove events from the calendar."""
         keep_removing = "y"
@@ -56,11 +70,11 @@ class Calendar():
 
             removed_event = input("\nWhich number event would you like to remove? (\"C\" to cancel): ")
 
-            correct_event = False
+            correct_input = False
 
-            while not correct_event:
+            while not correct_input:
                 if removed_event.isnumeric() and int(removed_event) < len(self.events) or removed_event.strip().lower() == "c":
-                    correct_event = True
+                    correct_input = True
                 else:
                     removed_event = input("Invalid response. Please try again: ")
 
@@ -97,10 +111,12 @@ class Calendar():
                 place_counter = 0
 
                 while place_counter < len(self.events):
-                    file.write("\nName: " + self.events[place_counter].name  + " Date: " + self.events[place_counter].date + " Time: " + self.events[place_counter].time + " Type: " 
+                    file.write("\nName: " + self.events[place_counter].name  + "\tDate: " + self.events[place_counter].date + "\tTime: " + self.events[place_counter].time + "\tType: " 
                     + self.events[place_counter].type)
 
                     place_counter += 1
+                
+                print("Calendar saved successfully.")
         except:
             print("File not found.")
 

@@ -1,6 +1,5 @@
 Calendar Name: Calendar
 Calendar Owner: Zach
 Events: 
-Name: a Date: 1 Time: 1 Type: single occurrence
-Name: b Date: 2 Time: 2 Type: recurring
-Name: c Date: 3 Time: 3 Type: fixed number of meetings
+Name: Birthday	Date: 6-28	Time: 12:00	Type: recurring
+Name: Christmas	Date: 12-25-2021	Time: 2:00	Type: single occurrence
