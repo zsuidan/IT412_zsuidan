@@ -26,7 +26,8 @@ class Calendar():
         keep_adding = "y"
         
         while keep_adding.strip().lower() == "y":
-            new_event = Event.createEvent()
+            new_event = Event("","","","")
+            new_event = new_event.createEvent()
 
             self.addEvent(new_event)
 

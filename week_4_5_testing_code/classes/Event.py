@@ -13,38 +13,36 @@ class Event():
         Returns:
             new_event -- the event created by the user
         """
-        event_name = input("Please enter the event name: ")
+        self.name = input("Please enter the event name: ")
 
-        while not self.okName(event_name):
-            event_name = input("Event name was not formatted correctly. Please try again: ")
+        while not self.okName():
+            self.name = input("Event name was not formatted correctly. Please try again: ")
 
-        event_date = input("Please enter the date for the event: ")
+        self.date = input("Please enter the date for the event: ")
 
-        while not self.okDate(event_date):
-            event_date = input("Event date was not formatted correctly. Please try again: ")
+        while not self.okDate():
+            self.date = input("Event date was not formatted correctly. Please try again: ")
 
-        event_time = input("Please enter the time for the event: ")
+        self.time = input("Please enter the time for the event: ")
 
-        while not self.okTime(event_time):
-            event_time = input("Event time was not formatted correctly. Please try again: ")
+        while not self.okTime():
+            self.time = input("Event time was not formatted correctly. Please try again: ")
 
-        event_type = input("Please enter the type of event (\"S\" for single occurrence, \"R\" for recurring, or \"F\" for fixed number of meetings): ")
+        self.type = input("Please enter the type of event (\"S\" for single occurrence, \"R\" for recurring, or \"F\" for fixed number of meetings): ")
 
-        while not self.okType(event_type):
-            event_type = input("Event type was not formatted correctly. Please try again: ")
+        while not self.okType():
+            self.type = input("Event type was not formatted correctly. Please try again: ")
 
-        if event_type.lower() == "s":
-            event_type = "single occurrence"
-        elif event_type.lower() == "r":
-            event_type = "recurring"
+        if self.type.lower() == "s":
+            self.type = "single occurrence"
+        elif self.type.lower() == "r":
+            self.type = "recurring"
         else:
-            event_type = "fixed number of meetings"
+            self.type = "fixed number of meetings"
 
-        new_event = Event(event_name, event_date, event_time, event_type)
+        return self
 
-        return new_event
-
-    def okDate(date):
+    def okDate(self):
         """Checks a date to ensure that it is formatted correctly.
         Arguments:
             date -- the date that is being tested
@@ -53,9 +51,9 @@ class Event():
         """
         allowed_characters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-"]
 
-        if date:
+        if self.date:
             characters_ok = True
-            for character in date:
+            for character in self.date:
                 if character not in allowed_characters:
                     characters_ok = False
         else:
@@ -63,20 +61,20 @@ class Event():
 
         return characters_ok
    
-    def okName(name):
+    def okName(self):
         """Checks a name to ensure that it is formatted correctly.
         Arguments:
             name -- the name that is being tested
         Returns:
             True if the name is valid, False if invalid
         """
-        if name.strip().isalpha():
+        if self.name.strip().isalpha():
             return True
         else:
             return False
 
 
-    def okTime(time):
+    def okTime(self):
         """Checks a time to ensure that it is formatted correctly.
         Arguments:
             time -- the time that is being tested
@@ -85,10 +83,10 @@ class Event():
         """
         allowed_characters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":"]
 
-        if time:
+        if self.time:
             characters_ok = True
 
-            for character in time:
+            for character in self.time:
                 if character not in allowed_characters:
                     characters_ok = False
         else:
@@ -96,14 +94,14 @@ class Event():
 
         return characters_ok
 
-    def okType(type):
+    def okType(self):
         """Checks an event type to ensure that it is formatted correctly.
         Arguments:
             type -- the type that is being tested
         Returns:
             True if the type is valid, False if invalid
         """
-        if type.strip().lower() == "s" or type.strip().lower() == "r" or type.strip().lower() == "f":
+        if self.type.strip().lower() == "s" or self.type.strip().lower() == "r" or self.type.strip().lower() == "f":
             return True
         else:
             return False
