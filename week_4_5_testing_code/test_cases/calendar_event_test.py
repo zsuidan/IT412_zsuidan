@@ -1,5 +1,29 @@
 import unittest
 from classes.Event import Event
+from classes.Calendar import Calendar
+
+class TestCalendarClass(unittest.TestCase):
+    """Tests the Calendar class"""
+
+    def setUp(self):
+        """Create an instance of the Calendar class for testing all class functions"""
+        self.test_calendar = Calendar("Test Calendar", "Zach")
+
+    def test_add_event(self):
+        """Tests adding an event to the Calendar"""
+        sample_event = Event("Christmas", "12-25-2021", "2:00", "single occurrence")
+        self.test_calendar.addEvent(sample_event)
+
+        self.assertIn(sample_event, self.test_calendar.events)
+
+    def test_remove_event(self):
+        """Tests removing an event from the Calendar"""
+        sample_event = Event("Christmas", "12-25-2021", "2:00", "single occurrence")
+        self.test_calendar.addEvent(sample_event)
+        self.test_calendar.removeEvent(sample_event)
+
+        self.assertNotIn(sample_event, self.test_calendar.events)
+
 
 class TestEventClass(unittest.TestCase):
     """Tests the Event class"""
@@ -13,7 +37,7 @@ class TestEventClass(unittest.TestCase):
 
     def test_ok_name_failure(self):
         """These are values which I think should NOT work"""
-        invalid_names_to_test = ["0123", "!@#^%#", "", "Birthday123", "Birthday!@#"]
+        invalid_names_to_test = ["0123", "!@#^%#", "", "Birthday123", "Birthday!@#", "  "]
 
         for name in invalid_names_to_test:
             self.assertFalse(Event.okName(name))
@@ -55,7 +79,7 @@ class TestEventClass(unittest.TestCase):
 
     def test_ok_type_failure(self):
         """These are values which I think should NOT work"""
-        invalid_types_to_test = ["", "123", "z", "!@#"]
+        invalid_types_to_test = ["", "123", "z", "!@#", "  "]
 
         for type in invalid_types_to_test:
             self.assertFalse(Event.okType(type))

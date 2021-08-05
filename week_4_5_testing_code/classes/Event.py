@@ -8,29 +8,29 @@ class Event():
         self.time = time
         self.type = type
 
-    def createEvent():
+    def createEvent(self):
         """Creates a new Event using a series of user inputs.
         Returns:
             new_event -- the event created by the user
         """
         event_name = input("Please enter the event name: ")
 
-        while not Event.okName(event_name):
+        while not self.okName(event_name):
             event_name = input("Event name was not formatted correctly. Please try again: ")
 
         event_date = input("Please enter the date for the event: ")
 
-        while not Event.okDate(event_date):
+        while not self.okDate(event_date):
             event_date = input("Event date was not formatted correctly. Please try again: ")
 
         event_time = input("Please enter the time for the event: ")
 
-        while not Event.okTime(event_time):
+        while not self.okTime(event_time):
             event_time = input("Event time was not formatted correctly. Please try again: ")
 
         event_type = input("Please enter the type of event (\"S\" for single occurrence, \"R\" for recurring, or \"F\" for fixed number of meetings): ")
 
-        while not Event.okType(event_type):
+        while not self.okType(event_type):
             event_type = input("Event type was not formatted correctly. Please try again: ")
 
         if event_type.lower() == "s":
