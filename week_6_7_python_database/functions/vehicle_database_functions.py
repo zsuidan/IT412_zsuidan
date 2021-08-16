@@ -91,7 +91,8 @@ def removeVehicle():
 
     #Either deletes the vehicle or cancels the deletion depending on user confirmation
     if confirm_delete.lower().strip() == "y":
-        vehicle_db.executeQuery("DELETE FROM vehicles WHERE index_id = '" + index_deleted + "'")
+        vehicle_db.executeQuery("DELETE FROM vehicles WHERE index_id = " + index_deleted)
+        vehicle_db.conn.commit()
 
         print("Vehicle deleted successfully")
     else:
