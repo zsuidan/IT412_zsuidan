@@ -5,17 +5,41 @@ vehicle_db = DB_Connect('root', '', 'python_projects')
 def addVehicle():
     """Adds a vehicle to the database using several user inputs."""
     #Gathers inputs from user and validates them if necessary
-    vehicle_make = validateMake()
+    vehicle_make = input("Please enter the vehicle make: ")
+
+    while not validMake(vehicle_make):
+        vehicle_make = input("Invalid vehicle make. Please try again: ")
+
     
-    vehicle_model = validateModel()
+    vehicle_model = input("Please enter the vehicle model: ")
 
-    vehicle_id_number = validateVIN()
+    while not validModel(vehicle_model):
+        vehicle_model = input("Invalid vehicle model. Please try again: ")
 
-    person_purchased_from = validatePerson()
 
-    price_paid = validatePricePaid()
+    vehicle_id_number = input("Please enter the vehicle VIN: ")
 
-    sales_price = validateSalesPrice()
+    while not validVIN(vehicle_id_number):
+        vehicle_id_number = input("Invalid vehicle VIN. Please try again: ")
+
+
+    person_purchased_from = input("Please enter the person the vehicle was purchased from (optional): ")
+
+    while not validPerson(person_purchased_from):
+        person_purchased_from = input("Invalid name. Please try again: ")
+
+
+    price_paid = input("Please enter the price paid for the vehicle (optional): ")
+
+    while not validPricePaid(price_paid):
+        price_paid = input("Invalid price. Please try again: ")
+
+
+    sales_price = input("Please enter the sales price: ")
+
+    while not validSalesPrice(sales_price):
+        sales_price = input("Invalid price. Please try again: ")
+
 
     vehicle_description = input("Please enter a vehicle description: ")
 
@@ -124,23 +148,53 @@ def updateVehicle():
 
         #Prompts user to enter new information for the field and edits the selected field
         if field_updated == "1":
-            new_info = validateMake()
+            new_info = input("Please enter the vehicle make: ")
+
+            while not validMake(new_info):
+                new_info = input("Invalid vehicle make. Please try again: ")
+
             vehicle_db.executeQuery("UPDATE vehicles SET vehicle_make='" + new_info + "' WHERE index_id = '" + index_updated + "'")
+
         elif field_updated == "2":
-            new_info = validateModel()
+            new_info = input("Please enter the vehicle model: ")
+
+            while not validModel(new_info):
+                new_info = input("Invalid vehicle model. Please try again: ")
+
             vehicle_db.executeQuery("UPDATE vehicles SET vehicle_model='" + new_info + "' WHERE index_id = '" + index_updated + "'")
+
         elif field_updated == "3":
-            new_info = validateVIN()
+            new_info = input("Please enter the vehicle VIN: ")
+
+            while not validVIN(new_info):
+                new_info = input("Invalid vehicle VIN. Please try again: ")
+
             vehicle_db.executeQuery("UPDATE vehicles SET vehicle_id_number ='" + new_info + "' WHERE index_id = '" + index_updated + "'")
+
         elif field_updated == "4":
-            new_info = validatePerson()
+            new_info = input("Please enter the person the vehicle was purchased from (optional): ")
+
+            while not validPerson(new_info):
+                new_info = input("Invalid name. Please try again: ")
+
             vehicle_db.executeQuery("UPDATE vehicles SET person_purchased_from='" + new_info + "' WHERE index_id = '" + index_updated + "'")
+
         elif field_updated == "5":
-            new_info = validatePricePaid()
+            new_info = input("Please enter the price paid for the vehicle (optional): ")
+
+            while not validPricePaid(new_info):
+                new_info = input("Invalid price. Please try again: ")
+
             vehicle_db.executeQuery("UPDATE vehicles SET price_paid='" + new_info + "' WHERE index_id = '" + index_updated + "'")
+
         elif field_updated == "6":
-            new_info = validateSalesPrice()
+            new_info = input("Please enter the sales price: ")
+
+            while not validSalesPrice(new_info):
+                new_info = input("Invalid price. Please try again: ")
+
             vehicle_db.executeQuery("UPDATE vehicles SET sales_price='" + new_info + "' WHERE index_id = '" + index_updated + "'")
+
         elif field_updated == "7":
             new_info = input("Please enter a vehicle description: ")
             vehicle_db.executeQuery("UPDATE vehicles SET vehicle_description='" + new_info + "' WHERE index_id = '" + index_updated + "'")
@@ -161,125 +215,111 @@ def updateVehicle():
                 keep_updating = input("Invalid response. Please enter either Y or N: ")
 
 
-def validateMake():
-    """Prompts user for a vehicle make and verifies it is formatted correctly.
+def validMake(vehicle_make):
+    """Verifies a vehicle make is formatted correctly.
+    Arguments:
+        vehicle_make -- the vehicle make being validated
     Returns:
-        vehicle_make -- the vehicle make entered by the user"""
-    vehicle_make = input("Please enter the vehicle make: ")
+        Either True or False depending on if it passes validation"""
 
-    correct_input = False
-
-    while not correct_input:
-        if vehicle_make and vehicle_make.isalpha():
-            correct_input = True
-        else:
-            vehicle_make = input("Invalid vehicle make. Please use letters only: ")
-
-    return vehicle_make
+    if vehicle_make.isalpha():
+        return True
+    else:
+        return False
 
 
-def validateModel():
-    """Prompts user for a vehicle model and verifies it is formatted correctly.
+def validModel(vehicle_model):
+    """Verifies a vehicle model is formatted correctly.
+    Arguments:
+        vehicle_model -- the vehicle model being validated
     Returns:
-        vehicle_model -- the vehicle model entered by the user"""
-    vehicle_model = input("Please enter the vehicle model: ")
+        ok_model -- True or False depending on if it passes validation"""
 
-    correct_input = False
+    ok_model = True
 
     banned_characters = ["!", "\"", "@", "#", "$", "%", "^", "*", "(", ")", "_", "=", "+", ",", "<", ">", "/", "?", ";", ":", "[", "]", "{", "}", "?", "~", "|", "."]
 
-    while not correct_input:
-        correct_input = True
+    if not vehicle_model:
+        ok_model = False
+    else:
+        for character in vehicle_model:
+            if character in banned_characters:
+                ok_model = False
 
-        if not vehicle_model:
-            correct_input = False
-            vehicle_model = input("Invalid vehicle model. Please try again: ")
-        else:
-            for character in vehicle_model:
-                if character in banned_characters:
-                    correct_input = False
-                    vehicle_model = input("Invalid vehicle model. Please try again: ")
-                    
-
-    return vehicle_model
+    return ok_model
 
 
-def validateVIN():
-    """Prompts user for a vehicle VIN and verifies it is formatted correctly.
+def validPerson(person_purchased_from):
+    """Verifies a person's name is formatted correctly.
+    Arguments:
+        person_purchased_from -- the name being validated
     Returns:
-        vehicle_id_number -- the vehicle VIN entered by the user"""
-    vehicle_id_number = input("Please enter the vehicle VIN: ")
+        ok_person -- True or False depending on if it passes validation"""
 
-    correct_input = False
-
-    while not correct_input:
-        if vehicle_id_number and vehicle_id_number.isalnum():
-            correct_input = True
-        else:
-            vehicle_id_number = input("Invalid VIN. Please try again: ")
-
-    return vehicle_id_number
-
-
-def validatePerson():
-    """Prompts user for a person and verifies it is formatted correctly.
-    Returns:
-        person_purchased_from -- the person entered by the user"""
-    person_purchased_from = input("Please enter who the vehicle was purchased from (optional): ")
+    ok_person = True
 
     allowed_characters = [" ", ",", ".", "'", "-"]
 
-    correct_input = False
+    for character in person_purchased_from:
+        if not character.isalpha() and character not in allowed_characters:
+            ok_person = False
 
-    while not correct_input:
-        correct_input = True
-
-        for character in person_purchased_from:
-            if not character.isalpha and character not in allowed_characters:
-                correct_input = False
-                person_purchased_from = input("Invalid name. Please try again: ")
-
-    return person_purchased_from
+    return ok_person
 
 
-def validatePricePaid():
-    """Prompts user for the price paid and verifies it is formatted correctly.
+def validPricePaid(price_paid):
+    """Verifies a price paid is formatted correctly.
+    Arguments:
+        price_paid -- the price paid being validated
     Returns:
-        price_paid -- the price entered by the user"""
-    price_paid = input("How much did you pay for the vehicle?: ")
+        ok_price -- True or False depending on if it passes validation"""
 
-    correct_input = False
+    ok_price = True
 
-    while price_paid and not correct_input:
-
-        is_float = isinstance(float(price_paid), float)
+    if price_paid:
+        try:
+            is_float = isinstance(float(price_paid), float)
         
-        if is_float:
-            correct_input = True
-        else:
-            price_paid = input("Invalid price. Please try again: ")
+            if not is_float:
+                ok_price = False
+        except:
+            ok_price = False
 
-    return price_paid
+    return ok_price
 
 
-def validateSalesPrice():
-    """Prompts user for a vehicle sales price and verifies it is formatted correctly.
+def validSalesPrice(sales_price):
+    """Verifies a sales price is formatted correctly.
+    Arguments:
+        sales_price -- the sales price being validated
     Returns:
-        sales_price -- the vehicle sales price entered by the user"""
-    sales_price = input("How much did you pay for the vehicle?: ")
+        ok_sales_price -- True or False depending on if it passes validation"""
 
-    correct_input = False
+    ok_sale_price = True
 
-    while not correct_input:
+    if sales_price:
+        try:
+            is_float = isinstance(float(sales_price), float)
 
-        if sales_price:
-            try:
-                is_float = isinstance(float(sales_price), float)
-                correct_input = is_float
-            except:
-                sales_price = input("Invalid price. Please try again: ")
+            if not is_float:
+                ok_sale_price = False
+        except:
+            ok_sale_price = False
 
-        else:
-            sales_price = input("Invalid price. Please try again: ")
+    else:
+        ok_sale_price = False           
 
-    return sales_price
+    return ok_sale_price
+
+
+def validVIN(vehicle_id_number):
+    """Verifies a vehicle VIN is formatted correctly.
+    Arguments:
+        vehicle_id_number -- the VIN being validated
+    Returns:
+        Either True or False depending on if it passes validation"""
+
+    if vehicle_id_number and vehicle_id_number.isalnum():
+        return True
+    else:
+        return False
