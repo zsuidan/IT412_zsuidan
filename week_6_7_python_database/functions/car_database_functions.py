@@ -3,7 +3,8 @@ from classes.database_access import DB_Connect
 vehicle_db = DB_Connect('root', '', 'python_projects')
 
 def addVehicle():
-    #Sometimes you must add COMMIT; after the statement
+    """Adds a vehicle to the database using several user inputs."""
+    #Gathers inputs from user and validates them if necessary
     vehicle_make = validateMake()
     
     vehicle_model = validateModel()
@@ -18,24 +19,55 @@ def addVehicle():
 
     vehicle_description = input("Please enter a vehicle description: ")
 
+    #Inserts the entereed vehicle information into the database
     vehicle_db.executeQuery("INSERT INTO vehicles (vehicle_make, vehicle_model, vehicle_id_number, person_purchased_from, price_paid, sales_price, vehicle_description)" 
                     + " VALUES ('" + vehicle_make + "','" + vehicle_model + "','" + vehicle_id_number + "','" + person_purchased_from + "','" + price_paid + "','" + sales_price 
                                 + "','" + vehicle_description + "');")
 
+    #Sometimes you must add COMMIT; after the statement
     vehicle_db.conn.commit()
 
+    #Notifies user the vehicle was added
     print("Vehicle added successfully")
 
 
 def removeVehicle():
+    """Removes the vehicle specified by the user from the database"""
+    #Shows all vehicles in the database to the user
     showVehicles()
 
-    car_deleted = input("\nPlease enter the index of the vehicle you would like to remove: ")
+    #Creates a list of all the valid indexes in the database
+    index_list = []
+    database_indexes = vehicle_db.executeSelectQuery("SELECT index_id FROM vehicles")
+    for index in database_indexes:
+        index_list.append(str(index["index_id"]))
 
-    confirm_delete = input("Are you sure you would like to delete vehicle " + car_deleted + "? (Y/N): ")
+    #Prompts user for which vehicle they would like to remove and validates their input
+    correct_index = False
 
+    index_deleted = input("\nPlease enter the index of the vehicle you would like to remove: ")
+
+    while not correct_index:
+
+        if index_deleted in index_list:
+            correct_index = True
+        else:
+            index_deleted = input("Invalid index. Please try again: ")
+
+    correct_input = False
+
+    #Ensures the user wants to delete the specified vehicle by giving them a confirmation prompt
+    confirm_delete = input("Are you sure you would like to delete vehicle " + index_deleted + "? (Y/N): ")
+
+    while not correct_input:
+        if confirm_delete.lower() == "y" or confirm_delete.lower() == "n":
+            correct_input = True
+        else:
+            confirm_delete = input("Invalid input. Please enter either Y or N: ")
+
+    #Either deletes the vehicle or cancels the deletion depending on user confirmation
     if confirm_delete.lower().strip() == "y":
-        vehicle_db.executeQuery("DELETE FROM vehicles WHERE index_id = '" + car_deleted + "'")
+        vehicle_db.executeQuery("DELETE FROM vehicles WHERE index_id = '" + index_deleted + "'")
 
         print("Vehicle deleted successfully")
     else:
@@ -43,6 +75,7 @@ def removeVehicle():
 
 
 def showVehicles():
+    """Prints out details for all vehicles contained in the database."""
     car_list = vehicle_db.executeSelectQuery("SELECT * FROM vehicles")
 
     for record in car_list:
@@ -52,13 +85,17 @@ def showVehicles():
 
 
 def updateVehicle():
+    """Allows a user to make changes to an existing vehicle."""
+    #Shows all vehicles in the database to the user
     showVehicles()
 
+    #Creates a list of all the valid indexes in the database
     index_list = []
     database_indexes = vehicle_db.executeSelectQuery("SELECT index_id FROM vehicles")
     for index in database_indexes:
         index_list.append(str(index["index_id"]))
 
+    #Prompts user for which vehicle they would like to update and validates their input
     correct_index = False
 
     index_updated = input("\nPlease enter the index of the vehicle you would like to update: ")
@@ -72,7 +109,9 @@ def updateVehicle():
 
     keep_updating = "y"
 
+    #Allows user to repeatedly modify specific fields of the selected vehicle until they choose to stop
     while keep_updating.lower() == "y":
+        #Prompts user for the field they would like to change
         correct_input = False
 
         field_updated = input("\n1. Vehicle Make\n2. Vehicle Model\n3. VIN\n4. Purchased From\n5. Price Paid\n6. Sales Price\n7. Description\n\nWhich field would you like to update?: ")
@@ -83,6 +122,7 @@ def updateVehicle():
             else:
                 field_updated = input("Invalid field. Please enter a number from 1-7: ") 
 
+        #Prompts user to enter new information for the field and edits the selected field
         if field_updated == "1":
             new_info = validateMake()
             vehicle_db.executeQuery("UPDATE vehicles SET vehicle_make='" + new_info + "' WHERE index_id = '" + index_updated + "'")
@@ -109,6 +149,7 @@ def updateVehicle():
 
         print("Update successful")
 
+        #Asks user if they would like to continue making updates
         correct_input = False
 
         keep_updating = input("Would you like to continue updating? (Y/N): ")
@@ -121,6 +162,9 @@ def updateVehicle():
 
 
 def validateMake():
+    """Prompts user for a vehicle make and verifies it is formatted correctly.
+    Returns:
+        vehicle_make -- the vehicle make entered by the user"""
     vehicle_make = input("Please enter the vehicle make: ")
 
     correct_input = False
@@ -135,6 +179,9 @@ def validateMake():
 
 
 def validateModel():
+    """Prompts user for a vehicle model and verifies it is formatted correctly.
+    Returns:
+        vehicle_model -- the vehicle model entered by the user"""
     vehicle_model = input("Please enter the vehicle model: ")
 
     correct_input = False
@@ -158,6 +205,9 @@ def validateModel():
 
 
 def validateVIN():
+    """Prompts user for a vehicle VIN and verifies it is formatted correctly.
+    Returns:
+        vehicle_id_number -- the vehicle VIN entered by the user"""
     vehicle_id_number = input("Please enter the vehicle VIN: ")
 
     correct_input = False
@@ -172,6 +222,9 @@ def validateVIN():
 
 
 def validatePerson():
+    """Prompts user for a person and verifies it is formatted correctly.
+    Returns:
+        person_purchased_from -- the person entered by the user"""
     person_purchased_from = input("Please enter who the vehicle was purchased from (optional): ")
 
     allowed_characters = [" ", ",", ".", "'", "-"]
@@ -190,6 +243,9 @@ def validatePerson():
 
 
 def validatePricePaid():
+    """Prompts user for the price paid and verifies it is formatted correctly.
+    Returns:
+        price_paid -- the price entered by the user"""
     price_paid = input("How much did you pay for the vehicle?: ")
 
     correct_input = False
@@ -207,6 +263,9 @@ def validatePricePaid():
 
 
 def validateSalesPrice():
+    """Prompts user for a vehicle sales price and verifies it is formatted correctly.
+    Returns:
+        sales_price -- the vehicle sales price entered by the user"""
     sales_price = input("How much did you pay for the vehicle?: ")
 
     correct_input = False

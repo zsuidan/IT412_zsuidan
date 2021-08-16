@@ -1,5 +1,6 @@
 from functions.car_database_functions import *
 
+#Presents user with various options for managing the vehicle database and ensures they selected a valid option
 correct_input = False
 
 task_performed = input("1. Show all vehicles\n2. Add a vehicle\n3. Edit a vehicle\n4. Remove a vehicle\n5. Exit program\n\nWhat would you like to do? (1-5): ")
@@ -10,22 +11,19 @@ while not correct_input:
     else:
         task_performed = input("Invalid input. Please enter a number between 1-5: ")
 
+#Allows user to continue making adjustments to the database until they enter the option to exit
 while task_performed.strip() != "5":
 
     if task_performed.strip() == "1":
-
         showVehicles()
     
     elif task_performed.strip() == "2":
-
         addVehicle()
 
     elif task_performed.strip() == "3":
-
         updateVehicle()
 
     elif task_performed.strip() == "4":
-
         removeVehicle()
 
     correct_input = False
