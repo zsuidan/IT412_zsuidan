@@ -1,4 +1,7 @@
 from functions.customer_database_functions import *
+from classes.database_access import DB_Connect
+
+customer_database = DB_Connect('root', '', 'python_projects')
 
 #Presents user with various options for managing the vehicle database and ensures they selected a valid option
 correct_input = False
@@ -17,24 +20,20 @@ while task_performed.strip() != "6":
 
     if task_performed.strip() == "1":
 
-        file_opened = input("Please enter the name of the json file you would like to import: ")
-        try:
-            import_json_file(file_opened)
-            print("Data imported successfully.")
-        except:
-            print("File not found.")
+        file_opened = input("Please enter the name of the file you would like to import: ")
+        import_json_file(file_opened, customer_database)
     
     elif task_performed.strip() == "2":
-        view_database()
+        view_database(customer_database)
 
     elif task_performed.strip() == "3":
-        add_record()
+        add_record(customer_database)
 
     #elif task_performed.strip() == "4":
         #edit_record()
     
     elif task_performed.strip() == "5":
-        delete_record()
+        delete_record(customer_database)
 
     correct_input = False
 
