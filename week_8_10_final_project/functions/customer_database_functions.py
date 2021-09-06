@@ -12,7 +12,7 @@ def add_record(database):
 
     l_name = input("Last name: ")
 
-    while not validName(f_name):
+    while not validName(l_name):
         l_name = input("Invalid name. Please try again: ")
 
     address = input("Address: ")
@@ -39,7 +39,7 @@ def add_record(database):
 
     primary_phone = input("Primary phone: ")
 
-    while not primary_phone or validPhone(primary_phone):
+    while (not primary_phone) or (not validPhone(primary_phone)):
         primary_phone = input("Invalid phone number. Please try again: ")
 
     secondary_phone = input("Secondary phone (optional): ")
@@ -178,6 +178,7 @@ def edit_record(database):
             #Updates the database with the new information
             database.executeQuery("UPDATE mailings SET " + field_changed + " = '" + new_info + "' WHERE mail_id = " + id_edited)
             database.conn.commit()
+            print("Record updated successfully.")
 
             #Prompts user for which field they would like to edit again
             print(database.executeSelectQuery("SELECT * FROM mailings where mail_id = " + id_edited))
@@ -279,6 +280,7 @@ def edit_record(database):
                 
             database.executeQuery("UPDATE crm_data SET " + field_changed + " = '" + new_info + "' WHERE crm_id = " + id_edited)
             database.conn.commit()
+            print("Record updated successfully.")
 
             print(database.executeSelectQuery("SELECT * FROM crm_data where crm_id = " + id_edited))
             field_edited = input("1. f_name\n2. l_name\n3. address\n4. city\n5. state\n6. zip\n7. company\n8. primary_phone\n9. secondary_phone\n10. email_address\n11. Stop editing" + 
