@@ -420,11 +420,6 @@ def validAddress(address):
 
     return address_ok
 
-def validCompany(company):
-    company_ok = True
-
-    return company_ok
-
 def validCity(city):
     """Ensures a city is properly formatted.
     Arguments:
