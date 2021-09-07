@@ -34,6 +34,11 @@ Arguments:<br>
  <dl><dt><a name="-edit_record"><strong>edit_record</strong></a>(database)</dt><dd><tt>Allows&nbsp;the&nbsp;user&nbsp;to&nbsp;edit&nbsp;a&nbsp;record&nbsp;in&nbsp;the&nbsp;database.<br>
 Arguments:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;database&nbsp;--&nbsp;the&nbsp;database&nbsp;which&nbsp;is&nbsp;being&nbsp;edited</tt></dd></dl>
+ <dl><dt><a name="-fix_quotes"><strong>fix_quotes</strong></a>(data)</dt><dd><tt>Adds&nbsp;escape&nbsp;characters&nbsp;to&nbsp;data&nbsp;so&nbsp;quotes&nbsp;can&nbsp;be&nbsp;inserted/updated&nbsp;properly.<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data&nbsp;--&nbsp;the&nbsp;raw&nbsp;data&nbsp;being&nbsp;checked<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data&nbsp;--&nbsp;data&nbsp;with&nbsp;quotes&nbsp;properly&nbsp;escaped</tt></dd></dl>
  <dl><dt><a name="-import_database_file"><strong>import_database_file</strong></a>(file, database)</dt><dd><tt>Opens&nbsp;a&nbsp;text&nbsp;file&nbsp;containing&nbsp;database&nbsp;information,&nbsp;then&nbsp;converts&nbsp;the&nbsp;file&nbsp;into&nbsp;json&nbsp;and&nbsp;csv&nbsp;format&nbsp;and&nbsp;uploads&nbsp;it&nbsp;to&nbsp;a&nbsp;database.<br>
 Arguments:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;--&nbsp;the&nbsp;file&nbsp;being&nbsp;imported<br>
@@ -48,6 +53,7 @@ Arguments:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;city&nbsp;--&nbsp;the&nbsp;city&nbsp;being&nbsp;validated<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;city_ok&nbsp;--&nbsp;boolean&nbsp;value&nbsp;which&nbsp;is&nbsp;either&nbsp;true&nbsp;if&nbsp;the&nbsp;city&nbsp;is&nbsp;valid&nbsp;or&nbsp;false&nbsp;if&nbsp;not</tt></dd></dl>
+ <dl><dt><a name="-validCompany"><strong>validCompany</strong></a>(company)</dt></dl>
  <dl><dt><a name="-validEmail"><strong>validEmail</strong></a>(email)</dt><dd><tt>Ensures&nbsp;an&nbsp;email&nbsp;is&nbsp;properly&nbsp;formatted.<br>
 Arguments:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;email&nbsp;--&nbsp;the&nbsp;email&nbsp;being&nbsp;validated<br>

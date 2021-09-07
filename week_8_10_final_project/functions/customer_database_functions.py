@@ -52,6 +52,10 @@ def add_record(database):
     while not validEmail(email_address):
         email_address = input("Invalid email. Please try again: ")
 
+    f_name = fix_quotes(f_name)
+    l_name = fix_quotes(l_name)
+    company = fix_quotes(company)
+
     database.executeQuery("INSERT INTO mailings (name, company, address) VALUES ('" + f_name + " " + l_name + "','" + company + "','" + address + "')")
 
     database.executeQuery("INSERT INTO crm_data (f_name, l_name, address, city, state, zip, company, primary_phone, secondary_phone, email_address) VALUES ('" 
@@ -175,10 +179,13 @@ def edit_record(database):
                 while not validAddress:
                     new_info = input("Invalid address. Please try again: ")
 
+            #Escapes quote and backslash characters before executing the SQL statement
+            new_info = fix_quotes(new_info)
+
             #Updates the database with the new information
             database.executeQuery("UPDATE mailings SET " + field_changed + " = '" + new_info + "' WHERE mail_id = " + id_edited)
             database.conn.commit()
-            print("Record updated successfully.")
+            print("Record updated successfully.\n")
 
             #Prompts user for which field they would like to edit again
             print(database.executeSelectQuery("SELECT * FROM mailings where mail_id = " + id_edited))
@@ -227,10 +234,10 @@ def edit_record(database):
 
             elif field_edited == "3":
                 field_changed = "address"
-                new_info = input("Please enter the new address:")
+                new_info = input("Please enter the new address: ")
 
                 while not validAddress(new_info):
-                    new_info = input("Invalid . Please try again: ")
+                    new_info = input("Invalid address. Please try again: ")
 
             elif field_edited == "4":
                 field_changed = "city"
@@ -241,10 +248,10 @@ def edit_record(database):
 
             elif field_edited == "5":
                 field_changed = "state"
-                new_info = input("Please enter the new state: ")
+                new_info = input("Please enter the new state: ").upper()
 
                 while not validState(new_info):
-                    new_info = input("Invalid state. Please try again: ")
+                    new_info = input("Invalid state. Please try again: ").upper()
 
             elif field_edited == "6":
                 field_changed = "zip"
@@ -261,8 +268,8 @@ def edit_record(database):
                 field_changed = "primary_phone"
                 new_info = input("Please enter the new primary phone: ")
 
-                while not validPhone(new_info):
-                    new_info = input("Invalid phone number. Please try again: ")
+                while (not new_info) or (not validPhone(new_info)):
+                        new_info = input("Invalid phone number. Please try again: ")
 
             elif field_edited == "9":
                 field_changed = "secondary_phone"
@@ -277,11 +284,16 @@ def edit_record(database):
 
                 while not validEmail(new_info):
                     new_info = input("Invalid email address. Please try again: ")
-                
+            
+            #Escapes quote and backslash characters before executing the SQL statement
+            new_info = fix_quotes(new_info)
+
+            #Updates the database with the new information
             database.executeQuery("UPDATE crm_data SET " + field_changed + " = '" + new_info + "' WHERE crm_id = " + id_edited)
             database.conn.commit()
-            print("Record updated successfully.")
+            print("Record updated successfully.\n")
 
+            #Prompts user for which field they would like to edit again
             print(database.executeSelectQuery("SELECT * FROM crm_data where crm_id = " + id_edited))
             field_edited = input("1. f_name\n2. l_name\n3. address\n4. city\n5. state\n6. zip\n7. company\n8. primary_phone\n9. secondary_phone\n10. email_address\n11. Stop editing" + 
                                 "\n\nWhat would you like to edit?: ")
@@ -293,6 +305,27 @@ def edit_record(database):
                     correct_input = True
                 else:
                     field_edited = input("Invalid input. Please enter a number between 1-11: ")
+
+def fix_quotes(data):
+    """Adds escape characters to data so quotes can be inserted/updated properly.
+    Arguments:
+        data -- the raw data being checked
+    Returns:
+        data -- data with quotes properly escaped
+    """
+    i = 0
+
+    while i < len(data):
+        
+        if data[i] == "'" or data[i] == "\"" or data[i] == "\\":
+            #Adds the escape character (\) before the character
+            data = data[:i] + "\\" + data[i:]
+            #Increments index an additional time since a new character was added
+            i += 1
+        print(data)
+        i += 1
+
+    return data
 
 def import_database_file(file, database):
     """Opens a text file containing database information, then converts the file into json and csv format and uploads it to a database.
@@ -386,6 +419,11 @@ def validAddress(address):
         address_ok = False
 
     return address_ok
+
+def validCompany(company):
+    company_ok = True
+
+    return company_ok
 
 def validCity(city):
     """Ensures a city is properly formatted.
