@@ -322,7 +322,7 @@ def fix_quotes(data):
             data = data[:i] + "\\" + data[i:]
             #Increments index an additional time since a new character was added
             i += 1
-        print(data)
+ 
         i += 1
 
     return data
